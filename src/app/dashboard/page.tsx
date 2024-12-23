@@ -1,3 +1,7 @@
+import { CirclePlus } from "lucide-react";
+
+import { db } from "@/db"
+import { Invoices } from "@/db/schema"
 
 import {
     Table,
@@ -9,13 +13,15 @@ import {
     TableRow,
 } from "@/components/ui/table"
 
+
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button";
-import { CirclePlus } from "lucide-react";
 import Link from "next/link";
 
 
-export default function Home() {
+export default async function Home() {
+
+    const results = await db.select().from(Invoices)
     return (
         <main className="flex flex-col gap-6  h-[100vh] text-center max-w-5xl mx-auto my-12 p-4">
 
@@ -53,23 +59,30 @@ export default function Home() {
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    <TableRow>
-                        <TableCell className="font-medium text-left">
-                            <span className="font-semibold">23/12/2024</span>
-                        </TableCell>
-                        <TableCell className="text-left">
-                            <span className="font-semibold">Faizan Tayyab</span>
-                        </TableCell>
-                        <TableCell className="text-left">
-                            <span className="">Faizan1421@gmail.com</span>
-                        </TableCell>
-                        <TableCell className="text-left">
-                            <Badge className="rounded-full">Open</Badge>
-                        </TableCell>
-                        <TableCell className="text-right">
-                            <span className="font-semibold">$250.00</span>
-                        </TableCell>
-                    </TableRow>
+                    {
+                        results.map((result) => {
+                            return (
+                                <TableRow key={result.id}>
+                                    <TableCell className="font-medium text-left" >
+                                        <span className="font-semibold">23/12/2024</span>
+                                    </TableCell>
+                                    <TableCell className="text-left">
+                                        <span className="font-semibold">Faizan Tayyab</span>
+                                    </TableCell>
+                                    <TableCell className="text-left">
+                                        <span className="">Faizan1421@gmail.com</span>
+                                    </TableCell>
+                                    <TableCell className="text-left">
+                                        <Badge className="rounded-full">{result?.status}</Badge>
+                                    </TableCell>
+                                    <TableCell className="text-right">
+                                        <span className="font-semibold">{result?.value/100}</span>
+                                    </TableCell>
+                                </TableRow>
+                            )
+                        })
+                    }
+
                 </TableBody>
             </Table>
 

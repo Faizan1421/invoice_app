@@ -1,24 +1,23 @@
 "use client";
-import { Button } from "@/components/ui/button";
+
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { createAction } from "@/app/actions";
 import { SyntheticEvent, useState } from "react";
+import SubmitButton from "@/components/SubmitButton";
 
+import Form from 'next/form'
 
 
 export default function Home() {
     const [state,setState] = useState("ready")
     async function handleOnSubmit (event: SyntheticEvent){
-        event.preventDefault()
         if (state === "pending"){
+            event.preventDefault()
             return
         }
         setState("pending")
-        const target = event.target as HTMLFormElement
-        const formData = new FormData(target)
-        await createAction(formData)
     }
 
     return (
@@ -28,7 +27,7 @@ export default function Home() {
             <div className="flex  justify-between">
                <h1 className="text-3xl font-semibold">Create Invoice</h1>
             </div>
-            <form onSubmit={handleOnSubmit} className="grid gap-4 w-full sm:max-w-xs" >
+            <Form action={createAction} onSubmit={handleOnSubmit} className="grid gap-4 w-full sm:max-w-xs" >
                 <div>
                     <Label htmlFor="name" className="block mb-2 font-semibold text-sm">Billing Name</Label>
                     <Input id="name" name="name" type="text" />
@@ -46,12 +45,10 @@ export default function Home() {
                     <Textarea id="description" name="description"></Textarea>
                 </div>
                 <div>
-                    <Button className="w-full font-semibold">
-                        Submit
-                    </Button>
+                    <SubmitButton/>
                 </div>
 
-            </form>
+            </Form>
 
         </main>
     );
