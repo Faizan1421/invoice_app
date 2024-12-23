@@ -17,7 +17,7 @@ import Link from "next/link";
 
 export default function Home() {
     return (
-        <main className="flex flex-col gap-6  h-[100vh] text-center max-w-5xl mx-auto my-12">
+        <main className="flex flex-col gap-6  h-[100vh] text-center max-w-5xl mx-auto my-12 p-4">
 
             <div className="flex  justify-between">
                 <h1 className="text-3xl font-semibold">Invoices</h1>

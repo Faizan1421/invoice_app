@@ -1,31 +1,34 @@
-
-import {sql} from "drizzle-orm"
-import { db } from "@/db";
+"use client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { createAction } from "@/app/actions";
+import { SyntheticEvent, useState } from "react";
 
 
 
+export default function Home() {
+    const [state,setState] = useState("ready")
+    async function handleOnSubmit (event: SyntheticEvent){
+        event.preventDefault()
+        if (state === "pending"){
+            return
+        }
+        setState("pending")
+        const target = event.target as HTMLFormElement
+        const formData = new FormData(target)
+        await createAction(formData)
+    }
 
-export default async function Home() {
-    const results = await db.execute(sql`SELECT current_database()`);
-    console.log(results)
     return (
-        <main className="flex flex-col gap-6  h-[100vh] max-w-5xl mx-auto my-12">
+        <main className="flex flex-col gap-6 h-[100vh] max-w-full p-4 mx-auto my-12 items-center sm:items-start">
 
+        
             <div className="flex  justify-between">
-                <h1 className="text-3xl font-semibold">Invoices</h1>
+               <h1 className="text-3xl font-semibold">Create Invoice</h1>
             </div>
-            <div className="flex  justify-between">
-               <h1 className="text-3xl font-semibold">Create Invoices</h1>
-            </div>
-
-            {
-                JSON.stringify(results)
-            }
-            <form className="grid gap-4 max-w-xs" >
+            <form onSubmit={handleOnSubmit} className="grid gap-4 w-full sm:max-w-xs" >
                 <div>
                     <Label htmlFor="name" className="block mb-2 font-semibold text-sm">Billing Name</Label>
                     <Input id="name" name="name" type="text" />

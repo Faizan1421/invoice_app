@@ -49,7 +49,12 @@ export default {
   				'3': 'hsl(var(--chart-3))',
   				'4': 'hsl(var(--chart-4))',
   				'5': 'hsl(var(--chart-5))'
-  			}
+  			},
+			  scrollbarLight: "#ffffff", // Light theme color
+			  scrollbarDark: "#020817",  // Dark theme color
+			  scrollbarThumbLight: "#020817",
+			  scrollbarThumbDark: "#ffffff",
+
   		},
   		borderRadius: {
   			lg: 'var(--radius)',
@@ -58,5 +63,30 @@ export default {
   		}
   	}
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [require("tailwindcss-animate"), function({addComponents, theme}){
+	addComponents({
+        ".custom-scrollbar": {
+          "&::-webkit-scrollbar": {
+            width: "5px",
+			height: "5px"
+          },
+          "&::-webkit-scrollbar-track": {
+            background: theme("colors.scrollbarLight"),
+            transition: "background-color 0.3s",
+          },
+          "&::-webkit-scrollbar-thumb": {
+            background: theme("colors.scrollbarThumbLight"),
+            borderRadius: "9999px",
+            transition: "background-color 0.3s",
+          },
+          ".dark &::-webkit-scrollbar-track": {
+            background: theme("colors.scrollbarDark"),
+          },
+          ".dark &::-webkit-scrollbar-thumb": {
+            background: theme("colors.scrollbarThumbDark"),
+			
+          },
+        },
+      });
+  }],
 } satisfies Config;
