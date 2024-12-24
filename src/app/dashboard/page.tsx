@@ -17,13 +17,14 @@ import {
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 
 export default async function Home() {
 
     const results = await db.select().from(Invoices)
     return (
-        <main className="flex flex-col gap-6  h-[100vh] text-center max-w-5xl mx-auto my-12 p-4">
+        <main className="flex flex-col gap-6  text-center max-w-5xl mx-auto my-12 p-4">
 
             <div className="flex  justify-between">
                 <h1 className="text-3xl font-semibold">Invoices</h1>
@@ -63,20 +64,31 @@ export default async function Home() {
                         results.map((result) => {
                             return (
                                 <TableRow key={result.id}>
-                                    <TableCell className="font-medium text-left" >
-                                        <span className="font-semibold">23/12/2024</span>
+                                    <TableCell className="font-medium text-left p-0" >
+                                        <Link href={`/invoices/${result?.id}`} className="block font-semibold p-4">{new Date(result?.createTs).toLocaleDateString()}</Link>
                                     </TableCell>
-                                    <TableCell className="text-left">
-                                        <span className="font-semibold">Faizan Tayyab</span>
+                                    <TableCell className="text-left p-0">
+                                        <Link href={`/invoices/${result?.id}`} className="block font-semibold p-4" >Faizan Tayyab</Link>
                                     </TableCell>
-                                    <TableCell className="text-left">
-                                        <span className="">Faizan1421@gmail.com</span>
+                                    <TableCell className="text-left p-0">
+                                        <Link href={`/invoices/${result?.id}`} className="block p-4">Faizan1421@gmail.com</Link>
                                     </TableCell>
-                                    <TableCell className="text-left">
-                                        <Badge className="rounded-full">{result?.status}</Badge>
+                                    <TableCell className="text-left p-0">
+                                        <Link href={`/invoices/${result?.id}`} className="block p-4">
+                                            <Badge className={cn(
+                                                "rounded-full capitalize",
+                                                result.status === "open" && "bg-blue-500",
+                                                result.status === "paid" && "bg-green-600",
+                                                result.status === "void" && "bg-zinc-700",
+                                                result.status === "uncollectible" && "bg-red-600",
+                                            )}
+                                            >
+                                                {result.status}
+                                            </Badge>
+                                        </Link>
                                     </TableCell>
-                                    <TableCell className="text-right">
-                                        <span className="font-semibold">{result?.value/100}</span>
+                                    <TableCell className="text-right p-0">
+                                        <Link href={`/invoices/${result?.id}`} className="block font-semibold p-4">${(result?.value / 100).toFixed(2)}</Link>
                                     </TableCell>
                                 </TableRow>
                             )
