@@ -2,7 +2,7 @@ import { CirclePlus } from "lucide-react";
 
 import { db } from "@/db"
 import { Invoices } from "@/db/schema"
-
+import Container from "@/components/Container";
 import {
     Table,
     TableBody,
@@ -24,7 +24,8 @@ export default async function Home() {
 
     const results = await db.select().from(Invoices)
     return (
-        <main className="flex flex-col gap-6  text-center max-w-5xl mx-auto my-12 p-4">
+        <Container className="min-h-[calc(100vh-150px)]">
+        <main className="flex flex-col gap-6  text-center mt-8">
 
             <div className="flex  justify-between">
                 <h1 className="text-3xl font-semibold">Invoices</h1>
@@ -100,5 +101,6 @@ export default async function Home() {
 
 
         </main>
+        </Container>
     );
 }

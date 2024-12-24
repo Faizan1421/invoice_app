@@ -1,8 +1,14 @@
+import {
+  ClerkProvider,
+  
+} from '@clerk/nextjs'
+
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider"
-import { ModeToggle } from "@/components/theme-switch";
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -24,6 +30,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
+    <ClerkProvider>
     <html lang="en" suppressHydrationWarning >
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased custom-scrollbar`}
@@ -34,12 +41,12 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange 
         >
-          <section className="fixed top-0 right-0 p-4 z-50">
-          <ModeToggle /> 
-          </section>
+          <Header/>
           {children}
+          <Footer/>
         </ThemeProvider>
       </body>
     </html>
+    </ClerkProvider>
   );
 }
